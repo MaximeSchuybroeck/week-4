@@ -30,7 +30,7 @@ public class GameModelTester {
         gameModel = new Minesweeper();
     }
 
-    @Test
+    @Test //test 1 OK
     public void testGeneratingEmptyTile() {
         TestableTile tile = gameModel.generateEmptyTile();
         assertNotNull(tile);
@@ -45,9 +45,9 @@ public class GameModelTester {
         tile.open();
     }
 
-    @Test 
+    @Test //test 2 OK
     public void testGeneratingExplosiveTile() {
-        TestableTile tile = gameModel.generateEmptyTile();
+        TestableTile tile = gameModel.generateExplosiveTile(); // orginele code TestableTile tile = gameModel.generateEmptyTile();
         assertNotNull(tile);
 
         tile.setTileNotifier(new MockTileStateNotifier() {
@@ -61,9 +61,9 @@ public class GameModelTester {
     }
 
 
-    @Test 
+    @Test //test 3
     public void testInitializingNewGame() {
-        final int h = 5, w=3, totalExplosion = 4;
+        final int h = 5, w = 3, totalExplosion = 4;
         gameModel.setGameStateNotifier(new MockGameStateNotifier() {
             @Override
             public void notifyNewGame(int row, int col) {
@@ -107,7 +107,7 @@ public class GameModelTester {
 
     }
 
-    @Test
+    @Test //test 4
     public void testInjectingTiles() {
         int row=3, col=4;
         AbstractTile world[][] = new AbstractTile[row][col];
@@ -130,7 +130,7 @@ public class GameModelTester {
                 assertEquals(gameModel.getTile(j, i), world[i][j]);
     }
 
-    @Test
+    @Test //test 5
     public void testFlagTile() {
         int size = 3;
         Deque<int[]> testQueue = new ArrayDeque<>();
@@ -172,7 +172,7 @@ public class GameModelTester {
         }
     }
 
-    @Test 
+    @Test //test 6
     public void testUnflagTile() {
         int size = 3;
         Deque<int[]> testQueue = new ArrayDeque<>();
@@ -229,7 +229,7 @@ public class GameModelTester {
 
     }
 
-    @Test
+    @Test //test 7
     public void testTogglingTile() {
         int size = 3;
         int[] target = new int[] {1,1};
@@ -274,7 +274,7 @@ public class GameModelTester {
         assertTrue(!gameModel.getTile(target[0], target[1]).isFlagged());
     }
 
-    @Test
+    @Test //test 8
     public void testOpeningEmptyTileWithExplosiveNeighbours() {
         int target[] = {1, 1};
         final int explosionCount = 4;
@@ -301,7 +301,7 @@ public class GameModelTester {
         gameModel.open(target[X], target[Y]);
     }
 
-    @Test
+    @Test //test 9
     public void testOpeningEmptyTileWithoutExplosiveNeighbours() {
         AbstractTile[][] world = new AbstractTile[][] {
             {gameModel.generateExplosiveTile(), gameModel.generateEmptyTile(), gameModel.generateEmptyTile(), gameModel.generateEmptyTile(), gameModel.generateExplosiveTile()},
@@ -352,7 +352,7 @@ public class GameModelTester {
         assertTrue(isNonExplosiveTileOpened);
     }
 
-    @Test
+    @Test //test 10
     public void testOpeningExplosiveTile() {
         int target[] = {0, 1};
         AbstractTile[][] world = new AbstractTile[][] {
@@ -401,7 +401,7 @@ public class GameModelTester {
         assertTrue(isAllTileOpened);
     }
 
-    @Test 
+    @Test //test 11
     public void testFlaggingOpenedTile() {
         final int size = 1;
         gameModel.setGameStateNotifier(new MockGameStateNotifier(){
@@ -429,7 +429,7 @@ public class GameModelTester {
         gameModel.flag(0, 0);
     }
 
-    @Test 
+    @Test //test 12
     public void testOpenningFirstTile() {
         final int size = 2;
         gameModel.setGameStateNotifier(new MockGameStateNotifier(){
@@ -456,7 +456,7 @@ public class GameModelTester {
                 }
     }
 
-    @Test
+    @Test //test 13
     public void testAddressingTile() {
         final int size = 2;
         gameModel.setGameStateNotifier(new MockGameStateNotifier() {
