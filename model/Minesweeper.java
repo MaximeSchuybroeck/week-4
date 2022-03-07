@@ -1,29 +1,39 @@
 package model;
 
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 public class Minesweeper extends AbstractMineSweeper{
 
+private List[][] field;
+private Difficulty level;
 
     public Minesweeper(){
 
     }
 
-    @java.lang.Override
+    @Override
     public int getWidth() {
-        return 0;
+        return field[0].length;
     }
 
     @java.lang.Override
     public int getHeight() {
-        return 0;
+        return field.length;
     }
 
     @java.lang.Override
     public void startNewGame(Difficulty level) {
+        this.level = level;
 
     }
 
     @java.lang.Override
     public void startNewGame(int row, int col, int explosionCount) {
+        if(assertEquals(level, Difficulty.EASY))
+        field = new List[][8];
 
     }
 

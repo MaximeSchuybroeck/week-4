@@ -113,7 +113,7 @@ public class MinesweeperView implements IGameStateNotifier {
         layoutConstraints.weightx = 1.0;
         layoutConstraints.weighty = 1.0;
         this.window.add(world, layoutConstraints);
-        this.window.setSize(500, 1);
+        this.window.setSize(500, 500);
         this.window.setVisible(true);
         this.window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);   
         try {
@@ -200,9 +200,8 @@ public class MinesweeperView implements IGameStateNotifier {
 
     @Override
     public void notifyTimeElapsedChanged(Duration newTimeElapsed) {
-        timerView.setText(
-                    String.format("%d:%02d", newTimeElapsed.toMinutesPart(), newTimeElapsed.toSecondsPart()));  
-        //
+        timerView.setText("");
+                   // String.format("%d:%02d", newTimeElapsed.toMinutesPart(), newTimeElapsed.toSecondsPart()));
     }
 
     @Override
