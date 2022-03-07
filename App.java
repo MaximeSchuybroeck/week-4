@@ -1,7 +1,6 @@
 import model.Difficulty;
 //import model.Minesweeper;
 import model.PlayableMinesweeper;
-//
 import view.MinesweeperView;
 
 public class App {
