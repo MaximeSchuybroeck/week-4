@@ -1,10 +1,6 @@
 package model;
 
-import java.util.List;
 import java.util.Random;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 //TODO voor ineens verschillende lege vakjes te clearen gebruik:
 // void floodFill( int x, int y ) {
@@ -74,7 +70,12 @@ public class Minesweeper extends AbstractMineSweeper{
         for (int Nrow = 0; Nrow < height; Nrow++) {
             System.out.print('\n');
             for (int Ncol = 0; Ncol < width; Ncol++) {
-                System.out.print(playingField[Nrow][Ncol].isExplosive());
+                if(playingField[Nrow][Ncol].isExplosive()){
+                    System.out.print(1 + " ");
+                }else{
+                    System.out.print(0 + " ");
+                }
+                //System.out.print(playingField[Nrow][Ncol].isExplosive());
             }
         }
     }
@@ -100,6 +101,7 @@ public class Minesweeper extends AbstractMineSweeper{
         Random rand = new Random(); // maak een gigantisch random nummer aan
         int countBombs = 0;
 
+        // TODO kan zijn dat er te weinig bommen aanwezig zijn, dit moet nog gecheckt worden en dan opnieuw uitgevoerd worden, gebruik while(countBombs < explosionCount) {}
         for (int row = 0; row < height; row++){
             for (int col = 0; col < width; col++) {
                 int randNum = rand.nextInt(64); // kies een nummer tussen 0-64 van rand
@@ -109,9 +111,7 @@ public class Minesweeper extends AbstractMineSweeper{
                 } else {
                     world[row][col] = generateEmptyTile();
                 }
-
             }
-
         }
     }
 
