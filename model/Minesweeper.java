@@ -1,5 +1,11 @@
 package model;
 
+import view.MinesweeperView;
+import view.TileView;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Random;
 
 //TODO voor ineens verschillende lege vakjes te clearen gebruik:
@@ -14,7 +20,7 @@ import java.util.Random;
 //       return;
 //   }
 
-public class Minesweeper extends AbstractMineSweeper{
+public class Minesweeper extends AbstractMineSweeper implements ActionListener {
 
     private int height;
     private int width;
@@ -24,10 +30,13 @@ public class Minesweeper extends AbstractMineSweeper{
 
     //private List<List<AbstractTile>> field; //stelt het speelveld voor
     private AbstractTile[][] playingField;
-    private int explosionCount; //hoeveelheid bommen er aanwezig zijn
+    private int explosionCount; //hoeveelheid bommen er aanwezig moeten zijn
+    private int countBombs; //effectief aanwizige bommen
+
+    private MinesweeperView gui;
 
     public Minesweeper(){
-
+        gui = new MinesweeperView();
     }
 
     @Override
@@ -50,22 +59,28 @@ public class Minesweeper extends AbstractMineSweeper{
 
         if(level == Difficulty.EASY){
             startNewGame(8,8,10);
+            this.gui.notifyNewGame(8,8);
         }
         else if(level == Difficulty.MEDIUM){
             startNewGame(16,16,40);
+            this.gui.notifyNewGame(16,16);
         }
         else if(level == Difficulty.HARD){
             startNewGame(16, 30, 99);
+            this.gui.notifyNewGame(16,30);
         }
     }
 
     @java.lang.Override
     public void startNewGame(int row, int col, int explosionCount) {
-        playingField = new AbstractTile[row][col];
         height = row;
         width = col;
         this.explosionCount = explosionCount;
+
+
+        playingField = new AbstractTile[row][col];
         setWorld(playingField);
+
         //printer om te checken in terminal
         for (int Nrow = 0; Nrow < height; Nrow++) {
             System.out.print('\n');
@@ -75,9 +90,10 @@ public class Minesweeper extends AbstractMineSweeper{
                 }else{
                     System.out.print(0 + " ");
                 }
-                //System.out.print(playingField[Nrow][Ncol].isExplosive());
             }
         }
+        System.out.print("\n");
+        System.out.print("aantal bommen aanwezig: " + countBombs);
     }
 
     @java.lang.Override
@@ -99,17 +115,29 @@ public class Minesweeper extends AbstractMineSweeper{
     @java.lang.Override
     public void setWorld(AbstractTile[][] world) {
         Random rand = new Random(); // maak een gigantisch random nummer aan
-        int countBombs = 0;
+        countBombs = 0; //effectief aanwizige bommen
 
-        // TODO kan zijn dat er te weinig bommen aanwezig zijn, dit moet nog gecheckt worden en dan opnieuw uitgevoerd worden, gebruik while(countBombs < explosionCount) {}
-        for (int row = 0; row < height; row++){
-            for (int col = 0; col < width; col++) {
+        //create the playing field
+        for (int row = 0; row < getHeight(); row++) {
+            for (int col = 0; col < getWidth(); col++) {
                 int randNum = rand.nextInt(64); // kies een nummer tussen 0-64 van rand
                 if (randNum <= 10 && countBombs < explosionCount) {
                     world[row][col] = generateExplosiveTile();
+
                     countBombs++;
                 } else {
                     world[row][col] = generateEmptyTile();
+                }
+            }
+        }
+        //if there are too few bombs create new bombs
+        if(countBombs < explosionCount){
+            while(countBombs < explosionCount) {
+                int randNumForHeight = rand.nextInt(getHeight());
+                int randNumForWidth = rand.nextInt(getWidth());
+                if(!world[randNumForHeight][randNumForWidth].isExplosive()){
+                    world[randNumForHeight][randNumForWidth] = generateExplosiveTile();
+                    countBombs++;
                 }
             }
         }
@@ -118,16 +146,20 @@ public class Minesweeper extends AbstractMineSweeper{
     @java.lang.Override
     public void open(int x, int y) {
         getTile(x, y).open();
+        //getCountExplosiveNeighbours(getTile(x, y)); // TODO make method getCountExplosiveNeighbours()
+        gui.notifyOpened(x, y,1);
     }
 
     @java.lang.Override
     public void flag(int x, int y) {
         getTile(x, y).flag();
+        gui.notifyFlagged(x, y);
     }
 
     @java.lang.Override
     public void unflag(int x, int y) {
         getTile(x, y).unflag();
+        gui.notifyUnflagged(x,y);
     }
 
     @java.lang.Override //TODO wat is dit? is dit dat wanneer je eerste tile aanklick een groot deel zo plots vrijkomt?
@@ -137,9 +169,10 @@ public class Minesweeper extends AbstractMineSweeper{
 
     @java.lang.Override
     public AbstractTile generateEmptyTile() {
-        AbstractTile tile = new AbstractTile() {
+        AbstractTile tile = new AbstractTile(){
             @Override
             public boolean open() {
+
                 return false;
             }
 
@@ -213,5 +246,10 @@ public class Minesweeper extends AbstractMineSweeper{
             }
         };
         return tile;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
     }
 }

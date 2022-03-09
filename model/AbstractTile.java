@@ -3,8 +3,9 @@ package model;
 import notifier.ITileStateNotifier;
 import test.TestableTile;
 
-public abstract class AbstractTile implements TestableTile {
+public abstract class AbstractTile  implements TestableTile  {
     protected ITileStateNotifier viewNotifier;
+
     public abstract boolean open();
     public abstract void flag();
     public abstract void unflag();
