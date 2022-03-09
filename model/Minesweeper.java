@@ -30,6 +30,7 @@ public class Minesweeper extends AbstractMineSweeper implements ActionListener {
 
     //private List<List<AbstractTile>> field; //stelt het speelveld voor
     private AbstractTile[][] playingField;
+    private TileView[][] tileViews;
     private int explosionCount; //hoeveelheid bommen er aanwezig moeten zijn
     private int countBombs; //effectief aanwizige bommen
 
@@ -79,6 +80,7 @@ public class Minesweeper extends AbstractMineSweeper implements ActionListener {
 
 
         playingField = new AbstractTile[row][col];
+        tileViews = new TileView[row][col];
         setWorld(playingField);
 
         //printer om te checken in terminal
@@ -123,10 +125,11 @@ public class Minesweeper extends AbstractMineSweeper implements ActionListener {
                 int randNum = rand.nextInt(64); // kies een nummer tussen 0-64 van rand
                 if (randNum <= 10 && countBombs < explosionCount) {
                     world[row][col] = generateExplosiveTile();
-
+                    tileViews[row][col] = new TileView(row, col);
                     countBombs++;
                 } else {
                     world[row][col] = generateEmptyTile();
+                    tileViews[row][col] = new TileView(row, col);
                 }
             }
         }
@@ -147,7 +150,9 @@ public class Minesweeper extends AbstractMineSweeper implements ActionListener {
     public void open(int x, int y) {
         getTile(x, y).open();
         //getCountExplosiveNeighbours(getTile(x, y)); // TODO make method getCountExplosiveNeighbours()
-        gui.notifyOpened(x, y,1);
+        gui.notifyOpened(x, y,9);
+        tileViews[x][y].notifyOpened(9);
+        //System.out.println("Tile (" + x + "," + y + ") opened.");
     }
 
     @java.lang.Override
@@ -170,30 +175,33 @@ public class Minesweeper extends AbstractMineSweeper implements ActionListener {
     @java.lang.Override
     public AbstractTile generateEmptyTile() {
         AbstractTile tile = new AbstractTile(){
-            @Override
-            public boolean open() {
+            boolean flagVar;
+            boolean openVar = false;
 
-                return false;
+            @Override
+            public boolean open() { //TODO wat moet hier gereturned worden?
+                openVar = true;
+                return true;
             }
 
             @Override
             public void flag() {
-
+                flagVar = true;
             }
 
             @Override
             public void unflag() {
-
+                flagVar = false;
             }
 
             @Override
             public boolean isFlagged() {
-                return false;
+                return flagVar;
             }
 
             @Override
             public boolean isOpened() {
-                return false;
+                return openVar;
             }
 
             @Override
@@ -207,39 +215,34 @@ public class Minesweeper extends AbstractMineSweeper implements ActionListener {
     @java.lang.Override
     public AbstractTile generateExplosiveTile() {
         AbstractTile tile = new AbstractTile() {
+            boolean flagVar;
+            boolean openVar = false;
+
             @Override
-            public boolean open() {
-                if (!open){
-                    open = true;
-                }
+            public boolean open() { //TODO wat moet hier gereturned worden?
+                openVar = true;
                 return true;
             }
 
             @Override
             public void flag() {
-                flaged = true;
+                flagVar = true;
             }
 
             @Override
             public void unflag() {
-                unflaged = true;
+                flagVar = false;
             }
 
             @Override
             public boolean isFlagged() {
-                if(flaged){
-                    return true;
-                }else{
-                    return false;
-                }
-
+                return flagVar;
             }
 
             @Override
             public boolean isOpened() {
-                return open;
+                return openVar;
             }
-
             @Override
             public boolean isExplosive() {
                 return true;
