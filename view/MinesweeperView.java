@@ -158,7 +158,8 @@ public class MinesweeperView implements IGameStateNotifier {
                     @Override
                     public void mousePressed(MouseEvent arg0) {
                         if (arg0.getButton() == MouseEvent.BUTTON1){
-                            if (gameModel!=null)
+                            //System.out.println("right Click on pos");
+                            if (gameModel!=null) //TODO waarom is gameModel Null?
                                 gameModel.open(temp.getPositionX(), temp.getPositionY());
                         } 
                         else if (arg0.getButton() == MouseEvent.BUTTON3) {

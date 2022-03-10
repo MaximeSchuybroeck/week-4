@@ -16,6 +16,8 @@ public class App {
         
         
         model.startNewGame(Difficulty.EASY);
+        model.open(4,4);
+        model.toggleFlag(3, 5);
         //model.startNewGame(Difficulty.MEDIUM);
 
     }
