@@ -191,9 +191,37 @@ public class Minesweeper extends AbstractMineSweeper {
     }
 
     public int getExplosionCountNeighbours(int x, int y) {
-        int explosionCountNeighbours = 9; // temp hardcoded
+        int explosionCountNeighbours = 0;
+        if (x < 0 || y < 0 || x > height || y > width ){
+        }
+        else{
+            if(getTile(x-1,y).isExplosive()){
+                explosionCountNeighbours++;
+            }
+            if(getTile(x+1,y).isExplosive()){
+                explosionCountNeighbours++;
+            }
+            if(getTile(x,y-1).isExplosive()){
+                explosionCountNeighbours++;
+            }
+            if(getTile(x,y+1).isExplosive()){
+                explosionCountNeighbours++;
+            }
+            if(getTile(x-1,y-1).isExplosive()){
+                explosionCountNeighbours++;
+            }
+            if(getTile(x+1,y-1).isExplosive()){
+                explosionCountNeighbours++;
+            }
+            if(getTile(x-1,y+1).isExplosive()){
+                explosionCountNeighbours++;
+            }
+            if(getTile(x+1,y+1).isExplosive()){
+                explosionCountNeighbours++;
+            }
+        }
         return explosionCountNeighbours;
-    } //TODO afwerken
+    }
 
     public void checkWon(){
 
