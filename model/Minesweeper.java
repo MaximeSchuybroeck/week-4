@@ -64,8 +64,8 @@ public class Minesweeper extends AbstractMineSweeper {
 
     @java.lang.Override
     public void startNewGame(int row, int col, int explosionCount) {
-        height = col;
-        width = row;
+        height = row;
+        width = col;
 
         this.explosionCount = explosionCount;
 
