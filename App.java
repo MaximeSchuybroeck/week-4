@@ -17,10 +17,7 @@ public class App {
         
         view.setGameModel(model);
         model.startNewGame(Difficulty.EASY);
-        model.open(6,8);
-        model.open(4,2);
-        model.toggleFlag(3, 5);
-        //model.startNewGame(Difficulty.MEDIUM);
+
 
     }
 }

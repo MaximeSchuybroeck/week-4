@@ -33,13 +33,11 @@ public class Minesweeper extends AbstractMineSweeper {
 
     @Override
     public int getWidth() {
-        //return field.get(0).size();
         return width;
     }
 
     @java.lang.Override
     public int getHeight() {
-        //return field.size();
         return height;
     }
 
@@ -51,19 +49,13 @@ public class Minesweeper extends AbstractMineSweeper {
         switch (level){
             case EASY:
                 startNewGame(8,8,10);
-                //minesweeperView(playableMinesweeper);
-                this.viewNotifier.notifyNewGame(8,8);
-                //tileViews = new TileView[8][8];
                 break;
             case MEDIUM:
                 startNewGame(16,16,40);
-                this.viewNotifier.notifyNewGame(16,16);
-                //tileViews = new TileView[16][16];
+
                 break;
             case HARD:
                 startNewGame(16, 30, 99);
-                this.viewNotifier.notifyNewGame(16,30);
-                //tileViews = new TileView[16][30];
                 break;
         }
 
@@ -77,7 +69,7 @@ public class Minesweeper extends AbstractMineSweeper {
 
         this.explosionCount = explosionCount;
 
-
+        this.viewNotifier.notifyNewGame(row,col);
         playingField = new AbstractTile[row][col];
 
         //tileViews = new TileView[row][col];
@@ -112,7 +104,7 @@ public class Minesweeper extends AbstractMineSweeper {
 
     @java.lang.Override
     public AbstractTile getTile(int x, int y) {
-        return playingField[x-1][y-1];
+        return playingField[x][y];
     }
 
     @java.lang.Override
@@ -126,11 +118,9 @@ public class Minesweeper extends AbstractMineSweeper {
                 int randNum = rand.nextInt(64); // kies een nummer tussen 0-64 van rand
                 if (randNum <= 10 && countBombs < explosionCount) {
                     world[row][col] = generateExplosiveTile();
-                    //tileViews[row][col] = new TileView(row, col);
                     countBombs++;
                 } else {
                     world[row][col] = generateEmptyTile();
-                    //tileViews[row][col] = new TileView(row, col);
                 }
             }
         }
@@ -151,22 +141,21 @@ public class Minesweeper extends AbstractMineSweeper {
     @java.lang.Override
     public void open(int x, int y) {
         getTile(x, y).open();
-        this.viewNotifier.notifyOpened(x-1, y-1, getExplosionCountNeighbours(x-1, y-1)); // TODO make method getCountExplosiveNeighbours()
-        //tileViews[x][y].notifyOpened(9);
+        this.viewNotifier.notifyOpened(x, y, getExplosionCountNeighbours(x, y)); // TODO make method getCountExplosiveNeighbours()
         System.out.println("Tile (" + x + "," + y + ") opened.");
     }
 
     @java.lang.Override
     public void flag(int x, int y) {
         getTile(x, y).flag();
-        this.viewNotifier.notifyFlagged(x-1, y-1);
-        //System.out.println("Tile (" + x + "," + y + ") flagged.");
+        this.viewNotifier.notifyFlagged(x, y);
+        System.out.println("Tile (" + x + "," + y + ") flagged.");
     }
 
     @java.lang.Override
     public void unflag(int x, int y) {
         getTile(x, y).unflag();
-        this.viewNotifier.notifyUnflagged(x-1, y-1);
+        this.viewNotifier.notifyUnflagged(x, y);
     }
 
     @java.lang.Override //TODO wat is dit? is dit dat wanneer je eerste tile aanklick een groot deel zo plots vrijkomt?
