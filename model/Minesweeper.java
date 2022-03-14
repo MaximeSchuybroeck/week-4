@@ -64,8 +64,8 @@ public class Minesweeper extends AbstractMineSweeper {
 
     @java.lang.Override
     public void startNewGame(int row, int col, int explosionCount) {
-        height = row;
-        width = col;
+        height = col;
+        width = row;
 
         this.explosionCount = explosionCount;
 
@@ -181,37 +181,71 @@ public class Minesweeper extends AbstractMineSweeper {
 
     public int getExplosionCountNeighbours(int x, int y) {
         int explosionCountNeighbours = 0;
-        if (x < 0 || y < 0 || x > height || y > width ){
+
+        //if (x < 0 || y < 0 || x > height || y > width) {
+        //}
+
+
+
+
+        try {
+            if(getTile(x - 1, y).isExplosive()){
+                explosionCountNeighbours++;
+            }
+        } catch (Exception ArrayIndexOutOfBoundsException) {
+            ArrayIndexOutOfBoundsException.printStackTrace();
         }
-        else{
-            if(getTile(x-1,y).isExplosive()){
+        try {
+            if(getTile(x + 1, y).isExplosive()){
                 explosionCountNeighbours++;
             }
-            if(getTile(x+1,y).isExplosive()){
+        } catch (Exception ArrayIndexOutOfBoundsException) {
+            ArrayIndexOutOfBoundsException.printStackTrace();
+        }
+        try {
+            if(getTile(x, y - 1).isExplosive()){
                 explosionCountNeighbours++;
             }
-            if(getTile(x,y-1).isExplosive()){
+        } catch (Exception ArrayIndexOutOfBoundsException) {
+            ArrayIndexOutOfBoundsException.printStackTrace();
+        }
+        try {
+            if(getTile(x, y + 1).isExplosive()){
                 explosionCountNeighbours++;
             }
-            if(getTile(x,y+1).isExplosive()){
+        } catch (Exception ArrayIndexOutOfBoundsException) {
+            ArrayIndexOutOfBoundsException.printStackTrace();
+        }
+        try {
+            if(getTile(x - 1, y - 1).isExplosive()){
                 explosionCountNeighbours++;
             }
-            if(getTile(x-1,y-1).isExplosive()){
+        } catch (Exception ArrayIndexOutOfBoundsException) {
+            ArrayIndexOutOfBoundsException.printStackTrace();
+        }
+        try {
+            if(getTile(x + 1, y - 1).isExplosive()){
                 explosionCountNeighbours++;
             }
-            if(getTile(x+1,y-1).isExplosive()){
+        } catch (Exception ArrayIndexOutOfBoundsException) {
+            ArrayIndexOutOfBoundsException.printStackTrace();
+        }
+        try {
+            if(getTile(x - 1, y + 1).isExplosive()){
                 explosionCountNeighbours++;
             }
-            if(getTile(x-1,y+1).isExplosive()){
+        } catch (Exception ArrayIndexOutOfBoundsException) {
+            ArrayIndexOutOfBoundsException.printStackTrace();
+        }
+        try {
+            if(getTile(x + 1, y + 1).isExplosive()){
                 explosionCountNeighbours++;
             }
-            if(getTile(x+1,y+1).isExplosive()){
-                explosionCountNeighbours++;
-            }
+        } catch (Exception ArrayIndexOutOfBoundsException) {
+            ArrayIndexOutOfBoundsException.printStackTrace();
         }
         return explosionCountNeighbours;
     }
-
     public void checkWon(){
 
     } //TODO afwerken
