@@ -1,5 +1,4 @@
 package model;
-
 import java.util.Random;
 
 //TODO voor ineens verschillende lege vakjes te clearen gebruik:
