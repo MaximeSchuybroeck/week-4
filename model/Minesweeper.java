@@ -1,6 +1,5 @@
 package model;
 
-import view.MinesweeperView;
 import java.util.Random;
 
 //TODO voor ineens verschillende lege vakjes te clearen gebruik:
@@ -72,7 +71,6 @@ public class Minesweeper extends AbstractMineSweeper {
         this.viewNotifier.notifyNewGame(row,col);
         playingField = new AbstractTile[row][col];
 
-        //tileViews = new TileView[row][col];
         setWorld(playingField);
 
         //printer om te checken in terminal
@@ -104,7 +102,7 @@ public class Minesweeper extends AbstractMineSweeper {
 
     @java.lang.Override
     public AbstractTile getTile(int x, int y) {
-        return playingField[x][y];
+        return playingField[y][x];
     }
 
     @java.lang.Override
@@ -140,9 +138,14 @@ public class Minesweeper extends AbstractMineSweeper {
 
     @java.lang.Override
     public void open(int x, int y) {
-        getTile(x, y).open();
-        this.viewNotifier.notifyOpened(x, y, getExplosionCountNeighbours(x, y)); // TODO make method getCountExplosiveNeighbours()
-        System.out.println("Tile (" + x + "," + y + ") opened.");
+        if(getTile(x, y).open()){
+            this.viewNotifier.notifyExploded(x, y);
+            System.out.println("Tile (" + x + "," + y + ") exploded.");
+        }else {
+            getTile(x, y).open();
+            this.viewNotifier.notifyOpened(x, y, getExplosionCountNeighbours(x, y)); // TODO make method getCountExplosiveNeighbours()
+            System.out.println("Tile (" + x + "," + y + ") opened.");
+        }
     }
 
     @java.lang.Override
@@ -186,7 +189,7 @@ public class Minesweeper extends AbstractMineSweeper {
         //}
 
         for(int a = x-1; a < x + 2; a++ ){
-            for(int b = x-1; b < x + 2; b++){
+            for(int b = y-1; b < y + 2; b++){
                 try {
                     if(getTile(a, b).isExplosive()){
                         TempExplosionCountNeighbours++;
@@ -255,7 +258,8 @@ public class Minesweeper extends AbstractMineSweeper {
         } catch (Exception ArrayIndexOutOfBoundsException) {
             ArrayIndexOutOfBoundsException.printStackTrace();
         }*/
-        return TempExplosionCountNeighbours;
+        //return TempExplosionCountNeighbours;
+        return 9;
     }
     public void checkWon(){
 
