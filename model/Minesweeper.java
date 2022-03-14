@@ -28,10 +28,7 @@ public class Minesweeper extends AbstractMineSweeper {
     private int explosionCount; //hoeveelheid bommen er aanwezig moeten zijn
     private int countBombs; //effectief aanwizige bommen
 
-    private MinesweeperView gui;
-
     public Minesweeper(){
-        gui = new MinesweeperView();
     }
 
     @Override
@@ -55,17 +52,17 @@ public class Minesweeper extends AbstractMineSweeper {
             case EASY:
                 startNewGame(8,8,10);
                 //minesweeperView(playableMinesweeper);
-                gui.notifyNewGame(8,8);
+                this.viewNotifier.notifyNewGame(8,8);
                 //tileViews = new TileView[8][8];
                 break;
             case MEDIUM:
                 startNewGame(16,16,40);
-                gui.notifyNewGame(16,16);
+                this.viewNotifier.notifyNewGame(16,16);
                 //tileViews = new TileView[16][16];
                 break;
             case HARD:
                 startNewGame(16, 30, 99);
-                gui.notifyNewGame(16,30);
+                this.viewNotifier.notifyNewGame(16,30);
                 //tileViews = new TileView[16][30];
                 break;
         }
@@ -154,7 +151,7 @@ public class Minesweeper extends AbstractMineSweeper {
     @java.lang.Override
     public void open(int x, int y) {
         getTile(x, y).open();
-        gui.notifyOpened(x-1, y-1, getExplosionCountNeighbours(x-1, y-1)); // TODO make method getCountExplosiveNeighbours()
+        this.viewNotifier.notifyOpened(x-1, y-1, getExplosionCountNeighbours(x-1, y-1)); // TODO make method getCountExplosiveNeighbours()
         //tileViews[x][y].notifyOpened(9);
         System.out.println("Tile (" + x + "," + y + ") opened.");
     }
@@ -162,14 +159,14 @@ public class Minesweeper extends AbstractMineSweeper {
     @java.lang.Override
     public void flag(int x, int y) {
         getTile(x, y).flag();
-        gui.notifyFlagged(x-1, y-1);
+        this.viewNotifier.notifyFlagged(x-1, y-1);
         //System.out.println("Tile (" + x + "," + y + ") flagged.");
     }
 
     @java.lang.Override
     public void unflag(int x, int y) {
         getTile(x, y).unflag();
-        gui.notifyUnflagged(x-1, y-1);
+        this.viewNotifier.notifyUnflagged(x-1, y-1);
     }
 
     @java.lang.Override //TODO wat is dit? is dit dat wanneer je eerste tile aanklick een groot deel zo plots vrijkomt?
