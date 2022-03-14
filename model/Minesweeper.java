@@ -18,16 +18,16 @@ import java.util.Random;
 //       return;
 //   }
 
-public class Minesweeper extends AbstractMineSweeper implements ActionListener {
+public class Minesweeper extends AbstractMineSweeper {
 
-    private int y;
-    private int x;
+    private int height;
+    private int width;
     private boolean open;
     private boolean flaged;
     private boolean unflaged;
 
     private AbstractTile[][] playingField;
-    //private TileView[][] tileViews;
+    private PlayableMinesweeper playableMinesweeper;
     private int explosionCount; //hoeveelheid bommen er aanwezig moeten zijn
     private int countBombs; //effectief aanwizige bommen
 
@@ -40,13 +40,13 @@ public class Minesweeper extends AbstractMineSweeper implements ActionListener {
     @Override
     public int getWidth() {
         //return field.get(0).size();
-        return x;
+        return width;
     }
 
     @java.lang.Override
     public int getHeight() {
         //return field.size();
-        return y;
+        return height;
     }
 
     @java.lang.Override
@@ -54,28 +54,32 @@ public class Minesweeper extends AbstractMineSweeper implements ActionListener {
         /**
          * Start a new game on the basis of the difficulty
          */
+        switch (level){
+            case EASY:
+                startNewGame(8,8,10);
+                //minesweeperView(playableMinesweeper);
+                gui.notifyNewGame(8,8);
+                //tileViews = new TileView[8][8];
+                break;
+            case MEDIUM:
+                startNewGame(16,16,40);
+                gui.notifyNewGame(16,16);
+                //tileViews = new TileView[16][16];
+                break;
+            case HARD:
+                startNewGame(16, 30, 99);
+                gui.notifyNewGame(16,30);
+                //tileViews = new TileView[16][30];
+                break;
+        }
 
-        if(level == Difficulty.EASY){
-            startNewGame(8,8,10);
-            gui.notifyNewGame(8,8);
-            //tileViews = new TileView[8][8];
-        }
-        else if(level == Difficulty.MEDIUM){
-            startNewGame(16,16,40);
-            gui.notifyNewGame(16,16);
-            //tileViews = new TileView[16][16];
-        }
-        else if(level == Difficulty.HARD){
-            startNewGame(16, 30, 99);
-            gui.notifyNewGame(16,30);
-            //tileViews = new TileView[16][30];
-        }
+
     }
 
     @java.lang.Override
     public void startNewGame(int row, int col, int explosionCount) {
-        y = row;
-        x = col;
+        height = row;
+        width = col;
 
         this.explosionCount = explosionCount;
 
@@ -86,9 +90,9 @@ public class Minesweeper extends AbstractMineSweeper implements ActionListener {
         setWorld(playingField);
 
         //printer om te checken in terminal
-        for (int Nrow = 0; Nrow < y; Nrow++) {
+        for (int Nrow = 0; Nrow < height; Nrow++) {
             System.out.print('\n');
-            for (int Ncol = 0; Ncol < x; Ncol++) {
+            for (int Ncol = 0; Ncol < width; Ncol++) {
                 if(playingField[Nrow][Ncol].isExplosive()){
                     System.out.print(1 + " ");
                 }else{
@@ -114,7 +118,7 @@ public class Minesweeper extends AbstractMineSweeper implements ActionListener {
 
     @java.lang.Override
     public AbstractTile getTile(int x, int y) {
-        return playingField[x][y];
+        return playingField[x-1][y-1];
     }
 
     @java.lang.Override
@@ -153,7 +157,7 @@ public class Minesweeper extends AbstractMineSweeper implements ActionListener {
     @java.lang.Override
     public void open(int x, int y) {
         getTile(x, y).open();
-        gui.notifyOpened(x, y, getExplosionCountNeighbours(x, y)); // TODO make method getCountExplosiveNeighbours()
+        gui.notifyOpened(x-1, y-1, getExplosionCountNeighbours(x-1, y-1)); // TODO make method getCountExplosiveNeighbours()
         //tileViews[x][y].notifyOpened(9);
         System.out.println("Tile (" + x + "," + y + ") opened.");
     }
@@ -161,14 +165,14 @@ public class Minesweeper extends AbstractMineSweeper implements ActionListener {
     @java.lang.Override
     public void flag(int x, int y) {
         getTile(x, y).flag();
-        gui.notifyFlagged(x, y);
+        gui.notifyFlagged(x-1, y-1);
         //System.out.println("Tile (" + x + "," + y + ") flagged.");
     }
 
     @java.lang.Override
     public void unflag(int x, int y) {
         getTile(x, y).unflag();
-        gui.notifyUnflagged(x, y);
+        gui.notifyUnflagged(x-1, y-1);
     }
 
     @java.lang.Override //TODO wat is dit? is dit dat wanneer je eerste tile aanklick een groot deel zo plots vrijkomt?
@@ -215,7 +219,6 @@ public class Minesweeper extends AbstractMineSweeper implements ActionListener {
         };
         return tile;
     }
-
     @java.lang.Override
     public AbstractTile generateExplosiveTile() {
         AbstractTile tile = new AbstractTile() {
@@ -255,19 +258,7 @@ public class Minesweeper extends AbstractMineSweeper implements ActionListener {
         return tile;
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        for (int row = 0; row < getHeight(); row++) {
-            for (int col = 0; col < getWidth(); col++) {
-                if(e.getSource() == playingField[row][col]) {
-                    if(!playingField[row][col].isOpened()){
-                        System.out.println("buton (" + row + "," + col + ") is pressed");
-                        open(row, col);
-
-                    }
-                }
-            }
-        }
+    public void createPlayableMinesweeper(){
 
     }
 
