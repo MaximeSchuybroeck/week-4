@@ -2,9 +2,9 @@ package model;
 
 public class Tile extends AbstractTile {
 
-    boolean flagVar = false;
-    boolean openVar = false;
-    boolean isExplosive = false;
+    private boolean flagVar = false;
+    private boolean openVar = false;
+    private boolean isExplosive = false;
 
     @Override
     public boolean open() {

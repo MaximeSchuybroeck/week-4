@@ -180,15 +180,26 @@ public class Minesweeper extends AbstractMineSweeper {
     }
 
     public int getExplosionCountNeighbours(int x, int y) {
-        int explosionCountNeighbours = 0;
+        int TempExplosionCountNeighbours = 0;
 
         //if (x < 0 || y < 0 || x > height || y > width) {
         //}
 
+        for(int a = x-1; a < x + 2; a++ ){
+            for(int b = x-1; b < x + 2; b++){
+                try {
+                    if(getTile(a, b).isExplosive()){
+                        TempExplosionCountNeighbours++;
+                    }
+                } catch (Exception ArrayIndexOutOfBoundsException) {
+                    ArrayIndexOutOfBoundsException.printStackTrace();
+                }
+            }
+
+        }
 
 
-
-        try {
+        /*try {
             if(getTile(x - 1, y).isExplosive()){
                 explosionCountNeighbours++;
             }
@@ -243,8 +254,8 @@ public class Minesweeper extends AbstractMineSweeper {
             }
         } catch (Exception ArrayIndexOutOfBoundsException) {
             ArrayIndexOutOfBoundsException.printStackTrace();
-        }
-        return explosionCountNeighbours;
+        }*/
+        return TempExplosionCountNeighbours;
     }
     public void checkWon(){
 
