@@ -175,80 +175,14 @@ public class Minesweeper extends AbstractMineSweeper {
     }
 
     @java.lang.Override
-    public AbstractTile generateEmptyTile() {
-        AbstractTile tile = new AbstractTile(){
-            boolean flagVar = false;
-            boolean openVar = false;
-
-            @Override
-            public boolean open() { //TODO wat moet hier gereturned worden?
-                openVar = true;
-                return true;
-            }
-
-            @Override
-            public void flag() {
-                flagVar = true;
-            }
-
-            @Override
-            public void unflag() {
-                flagVar = false;
-            }
-
-            @Override
-            public boolean isFlagged() {
-                return flagVar;
-            }
-
-            @Override
-            public boolean isOpened() {
-                return openVar;
-            }
-
-            @Override
-            public boolean isExplosive() {
-                return false;
-            }
-        };
+    public Tile generateEmptyTile() {
+        Tile tile = new Tile();
         return tile;
     }
     @java.lang.Override
-    public AbstractTile generateExplosiveTile() {
-        AbstractTile tile = new AbstractTile() {
-            boolean flagVar = false;
-            boolean openVar = false;
-
-            @Override
-            public boolean open() { //TODO wat moet hier gereturned worden?
-                openVar = true;
-                return true;
-            }
-
-            @Override
-            public void flag() {
-                flagVar = true;
-            }
-
-            @Override
-            public void unflag() {
-                flagVar = false;
-            }
-
-            @Override
-            public boolean isFlagged() {
-                return flagVar;
-            }
-
-            @Override
-            public boolean isOpened() {
-                return openVar;
-            }
-            @Override
-            public boolean isExplosive() {
-                return true;
-            }
-        };
+    public Tile generateExplosiveTile() {
+        Tile tile = new Tile();
+        tile.setExplosive();
         return tile;
     }
 

@@ -4,6 +4,7 @@ public class Tile extends AbstractTile {
 
     boolean flagVar = false;
     boolean openVar = false;
+    boolean isExplosive = false;
 
     @Override
     public boolean open() {
@@ -32,6 +33,14 @@ public class Tile extends AbstractTile {
     }
     @Override
     public boolean isExplosive() {
-        return true;
+        if(isExplosive){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    public void setExplosive(){
+        isExplosive = true;
     }
 }
